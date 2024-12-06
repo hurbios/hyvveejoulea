@@ -18,8 +18,8 @@ def readFile(file_path):
 
 
 def main():
-    rules, pages = readFile("./test_input.txt")
-    #rules, pages = readFile("./input.txt")
+    #rules, pages = readFile("./test_input.txt")
+    rules, pages = readFile("./input.txt")
     nodes = NodeTree()
 
     for page_set in pages:
@@ -40,14 +40,16 @@ def main():
         else:
             incorrect_sets.append(page_set)
         
-    print(incorrect_sets)
+
+    #print(f"Sum of correct sets middle page numbers: {sum(map(lambda x: int(x[len(x)//2]), correct_sets))}")
+    
+    #print(incorrect_sets)
 
     for page_set in incorrect_sets:
-        pass
-
-    print(f"Sum of correct sets middle page numbers: {sum(map(lambda x: int(x[len(x)//2]), correct_sets))}")
+        nodes.fix_list_order(page_set)
     
+    #print(incorrect_sets)
+    print(f"Sum of correct sets middle page numbers: {sum(map(lambda x: int(x[len(x)//2]), incorrect_sets))}")
 
 if __name__ == "__main__":
     main()
-

@@ -43,6 +43,21 @@ class NodeTree:
                     return False
         return True
 
+    def fix_list_order(self, page_set):
+        changed=True
+        while changed:
+            changed=False
+            for page in page_set:
+                for check_page in page_set:
+                    if check_page == page:
+                        break
+                    if self._nodes[page].is_child(check_page):
+                        temppage = check_page
+                        page_set.remove(check_page)
+                        page_set.append(temppage)
+                        changed=True
+
+
     def __iter__(self):
         return iter(self._nodes)
     
