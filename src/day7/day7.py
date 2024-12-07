@@ -13,11 +13,13 @@ def readFile(file_path):
 def check_equation(calculation):
     current_value=None
     #print(len(calculation[1])-1)
-    for seq in itertools.product(["*","+"], repeat=len(calculation[1])-1):
+    for seq in itertools.product(["*","+","||"], repeat=len(calculation[1])-1):
         #print(seq)
         for i,num in enumerate(calculation[1]):
             if not current_value:
                 current_value = int(num)
+            elif seq[i-1] == "||":
+                current_value = int(str(current_value) + num)
             else:
                 current_value = current_value * int(num) if seq[i-1] == "*" else current_value + int(num)
         if current_value == int(calculation[0]):
