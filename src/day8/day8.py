@@ -29,24 +29,34 @@ def check_antinode_boundaries(antinode, mapboundaries):
 
 def get_antinodes(antenna1, antenna2, mapboundaries):
     antinodes = set()
-    antinode1x = antenna1[0] + (antenna1[0] - antenna2[0])
-    antinode1y = antenna1[1] + (antenna1[1] - antenna2[1])
-    antinode2x = antenna2[0] + (antenna2[0] - antenna1[0])
-    antinode2y = antenna2[1] + (antenna2[1] - antenna1[1])
-    antinode1 = (antinode1x,antinode1y)
-    antinode2 = (antinode2x,antinode2y)
-    if check_antinode_boundaries(antinode1, mapboundaries):
+    antinode1x = antenna1[0] - antenna2[0]
+    antinode1y = antenna1[1] - antenna2[1]
+    antinode2x = antenna2[0] - antenna1[0]
+    antinode2y = antenna2[1] - antenna1[1]
+
+    i=0
+    antinode1 = (antenna1[0], antenna1[1])
+    while check_antinode_boundaries(antinode1, mapboundaries):
         antinodes.add(antinode1)
-    if check_antinode_boundaries(antinode2, mapboundaries):
+        i+=1
+        antinode1 = (antenna1[0] + antinode1x * i, antenna1[1] + antinode1y * i)
+    
+    i=0
+    antinode2 = (antenna2[0], antenna2[1])
+    while check_antinode_boundaries(antinode2, mapboundaries):
         antinodes.add(antinode2)
+        i+=1
+        antinode2 = (antenna2[0] + antinode2x * i, antenna2[1] + antinode2y * i)
+
     return antinodes
 
 def get_antenna_type_antinodes(antennanodes, mapboundaries):
     antinodes = set()
-    for products in itertools.combinations(antennanodes, 2):
-        tempantinodes = get_antinodes(products[0], products[1], mapboundaries)
-        antinodes.update(tempantinodes)
-    antinodes.discard(None)
+    if len(antennanodes) > 1:
+        for products in itertools.combinations(antennanodes, 2):
+            tempantinodes = get_antinodes(products[0], products[1], mapboundaries)
+            antinodes.update(tempantinodes)
+        antinodes.discard(None)
     return antinodes
 
 
