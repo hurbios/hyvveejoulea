@@ -26,8 +26,8 @@ class Trailmap:
     def _find_route(self, position, trail_endings, prev_value=-1):
         current_value = self._trailmap[position[1]][position[0]]
         
-        if (position[0], position[1]) in trail_endings:
-            return 0
+        # if (position[0], position[1]) in trail_endings:
+        #     return 0
         if current_value != prev_value + 1:
             return 0
         if current_value == 9:
