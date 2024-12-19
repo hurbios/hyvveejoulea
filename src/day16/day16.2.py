@@ -1,5 +1,3 @@
-import math
-import time
 from route import Nodes
 
 point_scores = {}
@@ -21,6 +19,7 @@ def run():
     nodes = Nodes((starting_point[0], starting_point[1]),starting_point[2], mapdata)
     nodes.create_network(((starting_point[0], starting_point[1]),starting_point[2]))
     print(nodes.get_score())
+    print(nodes.get_seats())
     
 
 

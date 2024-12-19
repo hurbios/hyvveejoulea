@@ -25,6 +25,8 @@ class Node:
             self._score = score
             self._children = []
             return self
+        elif self._score == score:
+            self._parents.append(parent)
         else:
             return False
 
@@ -33,6 +35,9 @@ class Node:
 
     def get_parents(self):
         return self._parents
+    
+    def get_position(self):
+        return self._position
 
 
 class Nodes:
@@ -60,7 +65,6 @@ class Nodes:
 
     def create_network(self, starting_point):
         next_nodes = self._nodes[starting_point].get_next_nodes()
-        self.starting_node = self._nodes[starting_point]
 
         # while len(next_nodes) > 0:
         for next_node in next_nodes:
@@ -82,4 +86,15 @@ class Nodes:
     def get_score(self):
         return self._finish_node.get_score()
 
-
+    def get_seats(self):
+        visited = set()
+        next_nodes = []
+        next_nodes += self._finish_node.get_parents()
+        visited.add(self._finish_node.get_position())
+        # print(next_nodes)
+        for next_node in next_nodes:
+            if next_node:
+                visited.add(next_node.get_position())
+                next_nodes += next_node.get_parents()
+        
+        return len(visited)
