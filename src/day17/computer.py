@@ -7,7 +7,6 @@ class Computer:
         self._program = program
         self._printout = ""
 
-
     def _get_combo_operand_value(self, operand):
         if operand < 4 and operand >= 0:
             return operand
@@ -25,6 +24,7 @@ class Computer:
         self._register_a //= denominator
         self._instruction_pointer += 2
         # self._register_a = self._register_a >> denominator
+
 
     def bxl(self, operand):
         self._register_b = self._register_b ^ operand
@@ -88,7 +88,7 @@ class Computer:
     def start_program(self):
         while len(self._program) > self._instruction_pointer:
             self.execute_function(self._program[self._instruction_pointer], self._program[self._instruction_pointer+1])
-        print(self._printout)
+        # print(self._printout)
 
     def get_register_a(self):
         return self._register_a
@@ -96,3 +96,8 @@ class Computer:
         return self._register_b
     def get_register_c(self):
         return self._register_c
+    
+    def get_printout(self):
+        return self._printout
+    
+
