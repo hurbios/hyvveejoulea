@@ -19,22 +19,28 @@ def create_node_network(d, nodes, dimensions, blocked):
         
 
 def run():
-    dimensions, cutoff, blocked = 6, 12, readFile("./test_input.txt")
-    # dimensions, cutoff, blocked = 70, 1024, readFile("./input.txt")
-    blocked=blocked[:cutoff]
-    # print(blocked)
-    nodes = []
-    for y in range(dimensions+1):
-        for x in range(dimensions+1):
-            if (x,y) not in blocked:
-                nodes.append((x,y))
-    d = Dijkstra(nodes)
+    # dimensions, cutoff, blocked = 6, 12, readFile("./test_input.txt")
+    dimensions, cutoff, blocked = 70, 1024, readFile("./input.txt")
+    
 
-    create_node_network(d, nodes, dimensions, blocked)
+    for i in range(cutoff, len(blocked),1):
+        nodes = []
+        for y in range(dimensions+1):
+            for x in range(dimensions+1):
+                if (x,y) not in blocked[:i]:
+                    nodes.append((x,y))
+        d = Dijkstra(nodes)
 
-    distances = d.find_distances((0,0))
+        create_node_network(d, nodes, dimensions, blocked[:i])
 
-    print("distance =", distances[dimensions,dimensions])
+        distances = d.find_distances((0,0))
+
+        # print(blocked[:i])
+        print(i, " - distance =", distances[dimensions,dimensions])
+
+        if distances[dimensions,dimensions] == float("inf"):
+            print(f"{blocked[i-1]} blocks route")
+            break
 
 
 
