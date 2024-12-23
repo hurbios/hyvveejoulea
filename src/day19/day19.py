@@ -17,28 +17,21 @@ def check_type_in_sub_towel(start, typelen, towel_type, towel):
             return False
     return True
 
-checked_towels = set()
+cache = {}
 
-def get_towels(types, towel, start):
+def get_towels(types, towel):
     # print(towel)
+    if towel == "":
+        return 1
+    result = 0
+    for towel_type in types:
+        if towel.startswith(towel_type):
+            end_towel = towel[len(towel_type):]
+            if end_towel not in cache:
+                cache[end_towel] = get_towels(types, end_towel)
+            result += cache[end_towel]
 
-    for towel_type in reversed(types):
-        typelen = len(towel_type)
-        towel_len = len(towel)
-        end_len = start + typelen
-        if towel_len == end_len:
-            if check_type_in_sub_towel(start, typelen, towel_type, towel):
-                return True
-        elif towel_len > end_len:
-            if check_type_in_sub_towel(start, typelen, towel_type, towel):
-                new_towel = towel[:end_len]
-                if new_towel not in types:
-                    # print(new_towel)
-                    types.append(new_towel)
-                if get_towels(types, towel, end_len):
-                    return True
-
-    return False
+    return result
 
 def run():
     types, towels = read_file("./input.txt")
@@ -48,16 +41,18 @@ def run():
     # print(towels)
 
     correct = []
+    results = []
     towel_len = len(towels)
     for i,towel in enumerate(towels):
         types_clone = types.copy()
         print(f"towel {i+1} / {towel_len}")
-        if get_towels(types_clone, towel, 0):
+        result = get_towels(types_clone, towel)
+        if result:
             correct.append(towel)
-        # print(types_clone)
+            results.append(result)
 
     # print("correct: ", correct, len(correct))
-    print("correct amount: ", len(correct))
+    print("correct amount: ", len(correct), "sum", sum(results))
 
 if __name__ == "__main__":
     run()
